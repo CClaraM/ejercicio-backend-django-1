@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+
+    # My apps
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +70,8 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+
+AUTH_USER_MODEL = 'users.User'
 
 ROOT_URLCONF = 'Cristorey.urls'
 
