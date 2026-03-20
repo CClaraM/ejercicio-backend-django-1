@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -56,6 +56,44 @@ class LoginView(APIView):
                 'rol': user.rol,
             }
         }, status=status.HTTP_200_OK)
+    
+class MiPerfilView(APIView):
+    permissions_classes = [IsAuthenticated]
 
+    def get(self, request):
+        user = request.user
+        return Response({
+            'id': user.id,
+            'documento': getattr(user, 'documento',''),
+            'username': user.username,
+            'nombre': user.first_name,
+            'apellido': user.last_name,
+            'email': user.email,
+            'rol': getattr(user, 'rol', 'estudiante'),
+        })
 
-       
+    def put(self, request):
+        user = request.user
+
+        user.first_name =  request.data.get('nombre', user.first_name)
+        user.last_name = request.data.get('apellido', user.last_name)
+        user.email = request.data.get('correo', user.email)
+
+        if hasattr(user, 'telefono'):
+            user.telefono = request.data.get('telefono',user.telefono)
+        
+        user.save()
+
+        return Response({
+            'message': 'Perfil actualizado correctamente',
+            'user': {
+                'id': user.id,
+                'documento': getattr(user, 'documento', ''),
+                'username': user.username,
+                'nombre': user.first_name,
+                'apellido': user.last_name,
+                'correo': user.email,
+                'telefono': getattr(user, 'telefono', ''),
+                'rol': getattr(user, 'rol', 'estudiante'),
+            }
+        })

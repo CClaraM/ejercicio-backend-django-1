@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     # My apps
     'users',
+    'biblioteca',
 ]
 
 MIDDLEWARE = [
@@ -74,6 +75,9 @@ SIMPLE_JWT = {
 AUTH_USER_MODEL = 'users.User'
 
 ROOT_URLCONF = 'Cristorey.urls'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 TEMPLATES = [
     {

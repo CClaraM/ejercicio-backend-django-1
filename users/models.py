@@ -3,9 +3,10 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     ROLES = [
-        ('admin', 'Administrador'),
-        ('bibliotecario', 'Bibliotecario'),
         ('estudiante', 'Estudiante'),
+        ('profesor', 'Profesor'),
+        ('bibliotecario', 'Bibliotecario'),
+        ('admin', 'Administrador'),
     ]
 
     documento = models.CharField(max_length=20, unique=True)
@@ -13,5 +14,5 @@ class User(AbstractUser):
     telefono = models.CharField(max_length=20, blank=True, default='')
 
     USERNAME_FIELD = 'documento'
-    REQUIRED_FIELDS = ['username', 'email']
+    REQUIRED_FIELDS = ['username', 'email', 'rol']
     
